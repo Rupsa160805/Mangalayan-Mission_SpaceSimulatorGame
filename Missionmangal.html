@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mangalyaan Mission - Advanced</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.3/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: url('technological-exploration-settlement.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    h1 {
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    h2, h3 {
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+    }
+
+    p, li, td {
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    }
+
+    /* Moving subheading */
+    .move-subheading {
+      display: inline-block;
+      animation: moveX 6s infinite linear;
+    }
+
+    @keyframes moveX {
+      from { transform: translateX(-100%); }
+      to { transform: translateX(100%); }
+    }
+
+    /* Focus Section for hover blur + zoom */
+    .focus-section {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(2px);  /* normal blur */
+      border-radius: 1rem;
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 1.5rem;
+      transition: transform 0.4s ease, backdrop-filter 0.4s ease, box-shadow 0.4s ease;
+      margin: 2rem auto;
+    }
+
+    .focus-section:hover {
+      backdrop-filter: blur(12px);  /* background zyada blur ho jayega */
+      transform: scale(1.05);       /* thoda zoom out */
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="text-white">
+
+  <!-- Header -->
+  <header class="text-center py-12 bg-gradient-to-b from-black/70 via-black/50 to-black/70">
+    <h1 class="text-7xl md:text-8xl lg:text-9xl font-extrabold mb-4 tracking-wider leading-tight text-yellow-300 drop-shadow-[4px_4px_10px_rgba(0,0,0,0.8)]">
+      Mangalyaan Mission
+    </h1>
+    <p class="text-xl md:text-2xl text-yellow-400 move-subheading">
+      India’s First Interplanetary Mission to Mars
+    </p>
+  </header>
+
+  <!-- Overview -->
+  <section class="focus-section max-w-5xl mx-auto">
+    <h2 class="text-3xl md:text-4xl font-bold mb-4 text-yellow-400">Mission Overview</h2>
+    <p class="text-lg md:text-xl leading-relaxed">
+      Mangalyaan, officially the Mars Orbiter Mission (MOM), was launched on 5 November 2013 by ISRO. India became the first Asian country to reach Mars orbit in its first attempt and the fourth space agency in the world to do so.
+    </p>
+  </section>
+
+  <!-- Objectives -->
+  <section class="focus-section max-w-5xl mx-auto">
+    <h2 class="text-3xl md:text-4xl font-bold mb-6 text-yellow-400">Mission Objectives</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="focus-section">
+        <h3 class="text-2xl font-semibold mb-3">Primary Technological Goal</h3>
+        <p class="text-lg">
+          Design, realise, and launch a Mars Orbiter spacecraft capable of <strong>autonomous operation</strong> during the journey to Mars, achieving <strong>Mars orbit insertion</strong>, and performing operations in the <strong>Mars orbit phase</strong>.
+        </p>
+      </div>
+      <div class="focus-section">
+        <h3 class="text-2xl font-semibold mb-3">Scientific Goals</h3>
+        <ul class="list-disc pl-5 space-y-2 text-lg">
+          <li>Study Martian surface features</li>
+          <li>Analyze morphology</li>
+          <li>Study mineralogy</li>
+          <li>Analyze Martian atmosphere</li>
+          <li>Carry five scientific payloads for detailed observations</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Facts -->
+  <section class="focus-section max-w-5xl mx-auto">
+    <h2 class="text-3xl md:text-4xl font-bold mb-4 text-yellow-400">Key Facts</h2>
+    <table class="table-auto w-full text-left border-collapse border border-gray-400 text-lg">
+      <tbody>
+        <tr><td class="border p-3">Launch Date</td><td class="border p-3">5 November 2013</td></tr>
+        <tr><td class="border p-3">Mars Orbit Insertion</td><td class="border p-3">24 September 2014</td></tr>
+        <tr><td class="border p-3">Mission Duration</td><td class="border p-3">6 Months (Extended)</td></tr>
+        <tr><td class="border p-3">Launch Vehicle</td><td class="border p-3">PSLV-C25</td></tr>
+        <tr><td class="border p-3">Launch Mass</td><td class="border p-3">1337 kg</td></tr>
+        <tr><td class="border p-3">Mission Cost</td><td class="border p-3">₹450 Crore (~$74 million)</td></tr>
+        <tr><td class="border p-3">Achievements</td><td class="border p-3">First Asian country to reach Mars orbit in first attempt; Successfully sent images of Mars</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Timeline -->
+  <section class="focus-section max-w-5xl mx-auto">
+    <h2 class="text-3xl md:text-4xl font-bold mb-4 text-yellow-400">Mission Timeline</h2>
+    <ul class="list-disc pl-5 space-y-2 text-lg">
+      <li>5 Nov 2013 – Launch from Sriharikota</li>
+      <li>24 Sep 2014 – Mars Orbit Insertion</li>
+      <li>Oct 2014 onwards – First images from Mars</li>
+      <li>Ongoing – Data collection & transmission to Earth</li>
+    </ul>
+  </section>
+
+  <!-- Fun Facts -->
+  <section class="focus-section max-w-5xl mx-auto">
+    <h2 class="text-3xl md:text-4xl font-bold mb-4 text-yellow-400">Fun Facts</h2>
+    <ul class="list-disc pl-5 space-y-2 text-lg">
+      <li>Cost-effective mission – Less than a Hollywood movie budget</li>
+      <li>Lightweight spacecraft designed with indigenous technology</li>
+      <li>India’s first interplanetary mission with successful Mars orbit insertion on first attempt</li>
+    </ul>
+  </section>
+
+</body>
+</html>
+
