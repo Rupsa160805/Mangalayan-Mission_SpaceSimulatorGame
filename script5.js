@@ -129,5 +129,6 @@ backButton.addEventListener("click", () => {
 });
 aboutButton.addEventListener("click", () => {
   // This simple command tells the browser to go to the previous page
-  window.location.href ="https://www.isro.gov.in/MarsOrbiterMissionSpacecraft.html";
+  window.location.href ="Missionmangal.html";
 });
+
