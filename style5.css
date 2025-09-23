@@ -1,0 +1,64 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: url('space.jpg') no-repeat center bottom; /* Use your launchpad image */
+    background-size: auto;
+    background-color: #000000; /* Black background for space */
+}
+
+#marsCanvas {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* Simple loading text */
+#loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-40%, -40%);
+    color: white;
+    font-size: 24px;
+}
+
+/* Add this to your existing CSS file */
+
+#backButton {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    border: 2px solid white;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 100; /* Make sure it's on top */
+    transition: background-color 0.3s;
+}
+
+#backButton:hover {
+    background-color: rgba(255, 255, 255, 0.3); /* Lighten on hover */
+}
+#aboutButton {
+    position: absolute;
+    top: 20px;
+    left: 140px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    border: 2px solid white;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 100; /* Make sure it's on top */
+    transition: background-color 0.3s;
+}
+
+#aboutButton:hover {
+    background-color: rgba(255, 255, 255, 0.3); /* Lighten on hover */
+}

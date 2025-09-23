@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upgraded Stage Separation</title>
+    <link rel="stylesheet" href="style2.css" />
+  </head>
+  <body>
+    <div class="space-background"></div>
+
+    <div class="rocket-container">
+      <div id="boosterContainer">
+        <img id="boosters" src="boosters.png" alt="Rocket Boosters" />
+        <div id="boosterFlame" class="flame booster-flame hidden"></div>
+      </div>
+
+      <div id="mainRocketContainer" class="hidden">
+        <img id="mainRocket" src="main-rocket.png" alt="Main Rocket" />
+        <div id="mainFlame" class="flame main-rocket-flame hidden"></div>
+      </div>
+    </div>
+
+    <button id="startButton">Start Separation</button>
+    <div id="successModal" class="modal-overlay hiddenz">
+      <div class="modal-content">
+        <h2>Stage 2 Complete!</h2>
+        <p>The PSLV C25 has successfully separated</p>
+        <button id="nextMissionButton">Go to Next Mission</button>
+      </div>
+    </div>
+
+    <audio id="launchSound" src="launch-sound.mp3" preload="auto"></audio>
+    <script src="script2.js"></script>
+  </body>
+</html>

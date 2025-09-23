@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rocket Launch Simulation PSLV C25</title>
+    <link rel="stylesheet" href="style1.css" />
+  </head>
+  <body>
+    <div class="launch-container">
+      <div class="background ground"></div>
+      <div class="background sky hidden"></div>
+
+      <div id="launchpad" class="launchpad"></div>
+      <div class="rocket-wrapper">
+        <img id="rocket" src="image.png" alt="Rocket" />
+        <div id="flame" class="flame hidden"></div>
+      </div>
+
+      <button id="launchButton">Launch Rocket!</button>
+      <div id="successModal" class="modal-overlay hidden">
+        <div class="modal-content">
+          <h2>Mission Success!</h2>
+          <p>The first stage of the launch is complete.</p>
+          <p>The next stage is Separation</p>
+          <button id="nextMissionButton">Go to Next Mission</button>
+        </div>
+      </div>
+    </div>
+    <audio id="launchSound" src="launch-sound.mp3" preload="auto"></audio>
+    <script src="script1.js"></script>
+  </body>
+</html>

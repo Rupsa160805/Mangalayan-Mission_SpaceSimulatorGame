@@ -1,0 +1,148 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    background-color: #000011;
+    font-family: Arial, sans-serif;
+}
+
+.space-background {
+    position: absolute;
+    background: url('space.jpg') no-repeat center bottom; /* Use your launchpad image */
+    background-size: auto;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: 1px 1px 1px #FFF, 50px 70px 1px #FFF, 100px 200px 0px #FFF, 
+                160px 300px 1px #FFF, 220px 150px 0px #FFF, 300px 80px 1px #FFF,
+                400px 250px 1px #FFF, 500px 120px 0px #FFF, 580px 280px 1px #FFF;
+}
+
+@keyframes slow-drift {
+    from { transform: translateY(0); }
+    to { transform: translateY(-200px); }
+}
+
+.rocket-assembly {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(20deg); /* Positioned in space */
+    width: 150px;
+    height: 500px;
+}
+
+/* Base styles for all rocket parts */
+#rocketBody, #satellite, .fairing {
+    position: absolute;
+    left: 50%;
+    transform-origin: center bottom;
+}
+
+#rocketBody {
+    width: 120px;
+    bottom: 0;
+    transform: translateX(-50%);
+    z-index: 2;
+}
+
+/* Fairing halves positioned to look like a single nose cone */
+#fairingLeft {
+    width: 83px;
+    top: -10px;
+    transform: translateX(-100%);
+    z-index: 4;
+}
+
+#fairingRight {
+    width: 61px;
+    top: 0;
+    transform: translateX(0%);
+    z-index: 4;
+}
+
+#satellite {
+    width: 200px;
+    top: 30px; /* Positioned inside the fairing area */
+    transform: translateX(-50%);
+    z-index: 3;
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.5s ease-in;
+}
+
+/* Animation triggers */
+#fairingLeft.separating {
+    animation: separate-left 3s forwards ease-in-out;
+}
+#fairingRight.separating {
+    animation: separate-right 3s forwards ease-in-out;
+}
+#satellite.deployed {
+    opacity: 1;
+    animation: deploy-satellite 10s forwards ease-out;
+}
+
+/* Keyframe animations */
+@keyframes separate-left {
+    0% { transform: translateX(-100%) rotate(0deg); opacity: 1; }
+    100% { transform: translateX(-200%) translateY(-50%) rotate(-25deg); opacity: 0; }
+}
+@keyframes separate-right {
+    0% { transform: translateX(0%) rotate(0deg); opacity: 1; }
+    100% { transform: translateX(100%) translateY(-50%) rotate(25deg); opacity: 0; }
+}
+@keyframes deploy-satellite {
+    0% { transform: translateX(-50%) translateY(0); }
+    100% { transform: translateX(-45%) translateY(-80px); } /* Gently pushes away */
+}
+
+/* Button Styling */
+#deployButton {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 30px;
+    font-size: 1.2em;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    z-index: 10;
+}
+/* Styles for the Pop-up Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+.modal-content {
+  background-color: white;
+  padding: 20px 40px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+.modal-content h2 {
+  color: #333;
+}
+.modal-content button {
+  padding: 12px 25px;
+  font-size: 16px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.hiddenz {
+  display: none;
+}

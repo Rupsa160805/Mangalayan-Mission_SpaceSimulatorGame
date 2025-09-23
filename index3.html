@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reaching Space Animation</title>
+    <link rel="stylesheet" href="style3.css" />
+  </head>
+  <body>
+    <div class="scene-container">
+      <div class="background sky"></div>
+      <div class="background space"></div>
+
+      <div class="rocket-wrapper">
+        <img id="rocket" src="main-rocket.png" alt="Rocket" />
+        <div id="flame" class="flame hidden"></div>
+      </div>
+    </div>
+
+    <button id="launchButton">Press HyperBoost</button>
+    <div id="successModal" class="modal-overlay hiddenz">
+      <div class="modal-content">
+        <h2>Stage 3 Complete!</h2>
+        <p>The PSLV-C25 has flawlessly executed its primary boost phase</p>
+        <button id="nextMissionButton">Go to Next Mission</button>
+      </div>
+    </div>
+
+    <script src="script3.js"></script>
+  </body>
+</html>

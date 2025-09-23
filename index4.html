@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Satellite Deployment</title>
+    <link rel="stylesheet" href="style4.css" />
+  </head>
+  <body>
+    <div class="space-background"></div>
+
+    <div class="rocket-assembly">
+      <img id="satellite" src="satellite.png" alt="Satellite" />
+
+      <img id="rocketBody" src="rocket-body.png" alt="Rocket Body" />
+
+      <img
+        id="fairingLeft"
+        class="fairing"
+        src="fairing-left.png"
+        alt="Left Fairing"
+      />
+      <img
+        id="fairingRight"
+        class="fairing"
+        src="fairing-right.png"
+        alt="Right Fairing"
+      />
+    </div>
+
+    <button id="deployButton">Deploy Satellite</button>
+    <div id="successModal" class="modal-overlay hiddenz">
+      <div class="modal-content">
+        <h2>Stage 4 Complete!</h2>
+        <p>The Mangalyaan has successfully placed the satellite into orbit.</p>
+        <button id="nextMissionButton">Observed the Mars Orbit</button>
+      </div>
+    </div>
+
+    <script src="script4.js"></script>
+  </body>
+</html>

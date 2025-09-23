@@ -1,0 +1,171 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+.scene-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* Rocket starts at the bottom */
+    overflow: hidden;
+}
+
+/* Base style for both backgrounds */
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: opacity 5s ease-in-out; /* Slow, smooth fade */
+}
+
+.sky {
+    background: linear-gradient(to top, #87CEEB 0%, #0077be 50%, #000033 100%); /* Blue sky to dark blue */
+    opacity: 1;
+    z-index: 1;
+}
+
+.space {
+    background: url('space.jpg') no-repeat center bottom; /* Use your launchpad image */
+    background-size: auto;
+    background-color: #000011;
+    /* Star effect using multiple box-shadows for performance */
+    box-shadow: 1px 1px 1px #FFF, 50px 70px 1px #FFF, 100px 200px 0px #FFF, 
+                160px 300px 1px #FFF, 220px 150px 0px #FFF, 300px 80px 1px #FFF,
+                400px 250px 1px #FFF, 500px 120px 0px #FFF, 580px 280px 1px #FFF,
+                -50px -70px 1px #FFF, -100px -200px 0px #FFF, -160px -300px 1px #FFF,
+                -220px -150px 0px #FFF, -300px -80px 1px #FFF, -400px -250px 1px #FFF;
+    opacity: 0; /* Initially hidden */
+    z-index: 0; /* Behind the sky */
+}
+
+/* When this class is added, the transition happens */
+.in-space .sky {
+    opacity: 0;
+}
+
+.in-space .space {
+    opacity: 1;
+    z-index: 2; /* Bring to front */
+}
+
+
+/* Rocket Styling */
+.rocket-wrapper {
+    position: relative;
+    bottom: -10%; /* Start slightly off-screen */
+    z-index: 3;
+    animation: launch-ascent 10s ease-in forwards;
+    animation-play-state: paused; /* Will start on button click */
+}
+
+.rocket-wrapper.launched {
+    animation-play-state: running;
+}
+
+#rocket {
+    width: 120px; /* Adjust size as needed */
+}
+
+@keyframes launch-ascent {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-120vh); /* Fly off the top of the screen */
+    }
+}
+
+
+/* Flame Styling */
+.flame {
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%) scaleY(0);
+    width: 50px;
+    height: 100px;
+    background: linear-gradient(to bottom, orange 0%, red 50%, yellow 100%);
+    border-radius: 50% 50% 30% 30%;
+    box-shadow: 0 0 20px 5px orange;
+    transition: all 0.2s ease-out;
+    opacity: 0;
+}
+
+.flame.active {
+    transform: translateX(-50%) scaleY(1);
+    opacity: 1;
+    animation: pulseFlame 0.5s infinite alternate;
+}
+
+.hidden {
+    display: none;
+}
+
+@keyframes pulseFlame {
+    from { transform: translateX(-50%) scaleY(1); }
+    to { transform: translateX(-50%) scaleY(1.1); }
+}
+
+
+/* Button Styling */
+#launchButton {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 30px;
+    font-size: 1.2em;
+    cursor: pointer;
+    background-color: #2a2a72;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    z-index: 10;
+}
+
+#launchButton:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+/* Styles for the Pop-up Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+.modal-content {
+  background-color: white;
+  padding: 20px 40px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+.modal-content h2 {
+  color: #333;
+}
+.modal-content button {
+  padding: 12px 25px;
+  font-size: 16px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.hiddenz {
+  display: none;
+}

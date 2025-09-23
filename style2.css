@@ -1,0 +1,193 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  min-height: 100vh;
+  background-color: #000033; /* Dark space background */
+  font-family: Arial, sans-serif;
+}
+
+.space-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 0%, #000044 0%, #000011 100%);
+  z-index: -1;
+  background-image: radial-gradient(
+      white,
+      rgba(255, 255, 255, 0.2) 2px,
+      transparent 40px
+    ),
+    radial-gradient(white, rgba(255, 255, 255, 0.15) 1px, transparent 30px),
+    radial-gradient(white, rgba(255, 255, 255, 0.1) 2px, transparent 40px);
+  background-size: 500px 500px, 300px 300px, 400px 400px;
+  animation: twinkle 60s infinite alternate;
+}
+
+@keyframes twinkle {
+  from {
+    background-position: 0 0, 50px 100px, 100px 200px;
+  }
+  to {
+    background-position: 500px 500px, 350px 400px, 400px 800px;
+  }
+}
+
+.rocket-container {
+  position: absolute;
+  bottom: -150px; /* Start below the viewport */
+  transition: transform 10s ease-in-out; /* Main launch ascent */
+}
+
+.rocket-container.launched {
+  transform: translateY(-200vh); /* Move rocket far up */
+}
+
+/* Styling for the new containers */
+#boosterContainer {
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px; /* Container width for boosters */
+}
+#mainRocketContainer {
+  position: absolute;
+  bottom: 200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px; /* Container width for boosters */
+}
+
+#mainRocketContainer {
+  width: 150px; /* Container width for main rocket */
+  z-index: 1; /* Behind boosters */
+}
+
+#boosterContainer {
+  z-index: 2; /* In front */
+}
+
+/* Make images fill their containers */
+#boosters,
+#mainRocket {
+  width: 70%;
+  height: 70%;
+}
+
+/* Apply separation animation to the CONTAINER */
+#boosterContainer.separating {
+  animation: separate-boosters 2.5s forwards ease-in;
+}
+
+@keyframes separate-boosters {
+  0% {
+    transform: translateX(-50%) translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-250%) translateY(80vh) rotate(-45deg);
+    opacity: 0;
+  }
+}
+
+/* General Flame Styling */
+.flame {
+  position: absolute;
+  left: 35%;
+  transform: translateX(-50%) scaleY(0);
+  background: linear-gradient(to bottom, orange 0%, red 50%, yellow 100%);
+  border-radius: 50% 50% 30% 30%;
+  box-shadow: 0 0 20px 5px orange, 0 0 40px 10px red;
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.flame.active {
+  transform: translateX(-50%) scaleY(1);
+  opacity: 1;
+  animation: pulseFlame 0.5s infinite alternate;
+}
+
+/* Specific styling for Booster Flame */
+.booster-flame {
+  bottom: -60px;
+  width: 80px;
+  height: 140px;
+}
+
+/* Specific styling for Main Rocket Flame */
+.main-rocket-flame {
+  bottom: -35px;
+  width: 50px;
+  height: 90px;
+}
+
+@keyframes pulseFlame {
+  from {
+    transform: translateX(-50%) scaleY(1) scaleX(1);
+  }
+  to {
+    transform: translateX(-50%) scaleY(1.1) scaleX(0.9);
+  }
+}
+
+/* Button Styling (no change) */
+#startButton {
+  position: absolute;
+  bottom: 20px;
+  padding: 15px 30px;
+  font-size: 1.2em;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+/* Helper class to hide elements */
+.hidden {
+  opacity: 2;
+  pointer-events: none; /* Make it unclickable */
+  transition: opacity 0.5s ease;
+}
+/* Styles for the Pop-up Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+.modal-content {
+  background-color: white;
+  padding: 20px 40px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+.modal-content h2 {
+  color: #333;
+}
+.modal-content button {
+  padding: 12px 25px;
+  font-size: 16px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.hiddenz {
+  display: none;
+}

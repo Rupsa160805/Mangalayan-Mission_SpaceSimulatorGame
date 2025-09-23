@@ -1,0 +1,205 @@
+body {
+    margin: 0;
+    overflow: hidden; /* Prevent scrollbars from appearing during animation */
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* Align button to the bottom */
+    min-height: 100vh; /* Full viewport height */
+    font-family: Arial, sans-serif;
+    background-color: #333;
+}
+
+.launch-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+/* Backgrounds - NO CHANGE HERE */
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: opacity 2s ease-in-out; /* Smooth transition for background swap */
+}
+
+.ground {
+    background: linear-gradient(to top, #6b4e3e 0%, #a07d6d 50%, #90a8a8 100%); /* Earthy ground with a hint of sky */
+    z-index: 1; /* Keep ground above sky initially */
+}
+
+.sky {
+    background: linear-gradient(to top, #87CEEB 0%, #0077be 50%, #000033 100%); /* Blue sky fading to dark space */
+    z-index: 0; /* Sky initially behind ground */
+    opacity: 0; /* Initially invisible */
+}
+
+.sky.active {
+    opacity: 1; /* Make sky visible */
+    z-index: 2; /* Bring sky to front */
+}
+
+.ground.hidden {
+    opacity: 0; /* Hide ground */
+    z-index: 0; /* Send ground to back */
+}
+
+/* NEW: Launchpad Styling */
+.launchpad {
+    position: absolute;
+    bottom: 0; /* Position at the very bottom */
+    width: 100%; /* Take full width */
+    height: 70%; /* Adjust height to fit the launchpad image */
+    background: url('launchpad2.jpg') no-repeat center bottom; /* Use your launchpad image */
+    background-size: contain; /* Ensure the image fits within the bounds */
+    z-index: 2; /* Above ground, below rocket */
+    transition: opacity 2s ease-in-out; /* For disappearing */
+}
+
+.launchpad.hidden {
+    opacity: 0; /* Hide launchpad */
+    z-index: 0; /* Send to back */
+}
+
+
+/* Rocket Styling - MODIFIED */
+.rocket-wrapper {
+    position: absolute;
+    bottom: 50px; /* Adjust this value so the rocket sits on the launchpad */
+    transform: translateY(0); /* Initial position */
+    transition: transform 5s ease-in-out; /* Smooth rocket ascent */
+    z-index: 3;
+}
+
+.rocket-wrapper.launched {
+    transform: translateY(-120vh); /* Move rocket way up */
+}
+
+#rocket {
+    width: 90px; /* REDUCED SIZE for the rocket to fit the launchpad */
+    height: auto;
+    display: block;
+}
+
+/* Flame Effect - NO CHANGE HERE */
+.flame {
+    position: absolute;
+    bottom: -30px; /* Position below the rocket */
+    left: 50%;
+    transform: translateX(-50%) scaleY(0); /* Start small and invisible */
+    width: 40px; /* Adjusted flame width for smaller rocket */
+    height: 80px; /* Max height of the flame */
+    background: linear-gradient(to bottom, orange 0%, red 50%, yellow 100%);
+    border-radius: 50% 50% 30% 30%; /* Flame shape */
+    box-shadow: 0 0 20px 5px orange, 0 0 40px 10px red;
+    transition: all 0.3s ease-out; /* Smooth growth */
+    opacity: 0;
+    z-index: 2;
+}
+
+.flame.active {
+    transform: translateX(-50%) scaleY(1); /* Grow to full size */
+    opacity: 1;
+    animation: pulseFlame 0.5s infinite alternate; /* Pulsing effect */
+}
+
+.flame.hidden {
+    display: none; /* Fully hide when not active */
+}
+
+@keyframes pulseFlame {
+    from {
+        transform: translateX(-50%) scaleY(1) scaleX(1);
+    }
+    to {
+        transform: translateX(-50%) scaleY(1.1) scaleX(0.9);
+    }
+}
+
+
+/* Button Styling - NO CHANGE HERE */
+#launchButton {
+    position: absolute;
+    bottom: 20px;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    cursor: pointer;
+    background-color: #4CAF50; /* Green */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    z-index: 4; /* Keep button on top */
+}
+
+#launchButton:hover {
+    background-color: #45a049;
+}
+
+#launchButton:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 3px rgba(0,0,0,0.3);
+}
+
+#launchButton:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Helper class to hide elements */
+.hidden {
+    /* Changed from display: none to opacity: 0 and z-index to allow transition for backgrounds/launchpad */
+    opacity: 0;
+    z-index: 0;
+    pointer-events: none; /* Make it unclickable */
+}
+
+/* Re-add specific display:none for flame when it's totally off */
+.flame.hidden {
+    display: none;
+}
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100; /* Make sure it's on top of everything */
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px 40px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.modal-content h2 {
+    color: #333;
+}
+
+.modal-content p {
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.modal-content button {
+    padding: 12px 25px;
+    font-size: 16px;
+    background-color: #4CAF50; /* Green */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
