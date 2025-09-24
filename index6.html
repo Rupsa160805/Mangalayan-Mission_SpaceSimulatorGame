@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orbit Raising Mission</title>
+    <link rel="stylesheet" href="style6.css">
+</head>
+<body>
+    <canvas id="gameCanvas"></canvas>
+
+    <div id="ui-container">
+        <div class="info-box">
+            <div id="fuelLabel">FUEL</div>
+            <div id="fuelBarContainer">
+                <div id="fuelBar"></div>
+            </div>
+            <div id="fuelText">100%</div>
+        </div>
+        
+        <div id="controls">
+            <button id="engineButton">ENGINE OFF</button>
+            <button id="hyperboostButton" class="hidden">HYPERBOOST</button>
+        </div>
+    </div>
+
+    <div id="apogeeLabel" class="label">APOGEE</div>
+    <div id="perigeeLabel" class="label">PERIGEE</div>
+
+    <div id="missionFailedModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2>MISSION FAILED</h2>
+            <p>You ran out of fuel before reaching the final orbit.</p>
+            <button id="retryButton">RETRY MISSION</button>
+        </div>
+    </div>
+    
+    <div id="hint" class="info-box">
+        Hint: Fire your engine at PERIGEE for the most efficient orbit change!
+    </div>
+
+    <script type="importmap">
+        { "imports": { "three": "https://unpkg.com/three@0.163.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.163.0/examples/jsm/" } }
+    </script>
+    <script type="module" src="script6.js"></script>
+</body>
+</html>

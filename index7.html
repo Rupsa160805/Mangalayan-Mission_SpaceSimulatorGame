@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hohmann Transfer Orbit Simulation</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        font-family: "Monaco", "Consolas", "Courier New", monospace;
+        background-color: #000;
+        color: white;
+      }
+
+      #gameCanvas {
+        display: block;
+        width: 100vw;
+        height: 100vh;
+      }
+
+      .info-panel {
+        position: absolute;
+        background: rgba(0, 0, 0, 0.5);
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 14px;
+        line-height: 1.5;
+        pointer-events: none; /* Make panels non-interactive */
+      }
+
+      #top-left-panel {
+        top: 20px;
+        left: 20px;
+      }
+
+      #bottom-left-panel {
+        bottom: 20px;
+        left: 20px;
+        text-align: left;
+      }
+      #nextButton {
+        position: absolute;
+        top: 20px;
+        left: 200px;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+        border: 2px solid white;
+        border-radius: 8px;
+        cursor: pointer;
+        z-index: 100; /* Make sure it's on top */
+        transition: background-color 0.3s;
+      }
+
+      #nextButton:hover {
+        background-color: rgba(255, 255, 255, 0.3); /* Lighten on hover */
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="gameCanvas"></canvas>
+
+    <div id="top-left-panel" class="info-panel">
+      <div id="mission-title">Mars Orbiter Mission</div>
+      <div id="date-display">2013-11-05</div>
+    </div>
+
+    <div id="bottom-left-panel" class="info-panel">
+      <div id="velocity-display">29.780km/s</div>
+      <div id="distance-display">149,600,000km</div>
+    </div>
+    <button id="nextButton">&larr; Next Mission</button>
+
+    <!-- Import maps for Three.js -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/"
+        }
+      }
+    </script>
+
+    <script type="module">
+      import * as THREE from "three";
+      import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+      // --- SETUP ---
+      const scene = new THREE.Scene();
+      const canvas = document.getElementById("gameCanvas");
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      const textureLoader = new THREE.TextureLoader();
+      const nextButton = document.getElementById("nextButton");
+
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      camera.position.set(0, 60, 0); // Direct top-down view
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+
+      // --- UI ELEMENTS ---
+      const dateDisplay = document.getElementById("date-display");
+      const velocityDisplay = document.getElementById("velocity-display");
+      const distanceDisplay = document.getElementById("distance-display");
+
+      // --- LIGHTING ---
+      const ambientLight = new THREE.AmbientLight(0xcccccc, 0.5);
+      scene.add(ambientLight);
+      const pointLight = new THREE.PointLight(0xffffff, 1.5, 200);
+      scene.add(pointLight);
+
+      // --- GAME STATE ---
+      let gameState = {
+        isTransferring: false,
+        transferProgress: 0,
+        satelliteMode: "earthOrbit", // 'earthOrbit', 'transfer', 'marsOrbit'
+        marsOrbitEntryTime: 0, // To ensure smooth orbit start
+      };
+
+      // --- ORBITAL & PHYSICS PARAMETERS ---
+      const EARTH_ORBIT_RADIUS = 20;
+      const MARS_ORBIT_RADIUS = 35;
+      const EARTH_ORBIT_SPEED = 0.05;
+      const MARS_ORBIT_SPEED =
+        EARTH_ORBIT_SPEED * Math.sqrt(EARTH_ORBIT_RADIUS / MARS_ORBIT_RADIUS);
+      const MARS_START_OFFSET = 0; // Planets start aligned at their closest point
+
+      // --- OBJECTS ---
+      const sun = new THREE.Mesh(
+        new THREE.SphereGeometry(2.5, 32, 32),
+        new THREE.MeshBasicMaterial({
+          map: textureLoader.load("sun-texture.jpg"),
+        })
+      );
+      sun.position.set(0, 0, 0);
+      scene.add(sun);
+      const earth = new THREE.Mesh(
+        new THREE.SphereGeometry(1.2, 32, 32),
+        new THREE.MeshStandardMaterial({
+          map: textureLoader.load("earth-texture.jpg"),
+          roughness: 0.8,
+        })
+      );
+      scene.add(earth);
+      const mars = new THREE.Mesh(
+        new THREE.SphereGeometry(0.8, 32, 32),
+        new THREE.MeshStandardMaterial({
+          map: textureLoader.load("mars-texture.jpg"),
+          roughness: 0.9,
+        })
+      );
+      scene.add(mars);
+
+      // --- ORBIT LINES ---
+      const earthOrbit = new THREE.Mesh(
+        new THREE.RingGeometry(
+          EARTH_ORBIT_RADIUS - 0.1,
+          EARTH_ORBIT_RADIUS + 0.1,
+          128
+        ),
+        new THREE.MeshBasicMaterial({ color: 0x0000ff, side: THREE.DoubleSide })
+      );
+      earthOrbit.rotation.x = Math.PI / 2;
+      scene.add(earthOrbit);
+      const marsOrbit = new THREE.Mesh(
+        new THREE.RingGeometry(
+          MARS_ORBIT_RADIUS - 0.1,
+          MARS_ORBIT_RADIUS + 0.1,
+          128
+        ),
+        new THREE.MeshBasicMaterial({ color: 0x888888, side: THREE.DoubleSide })
+      );
+      marsOrbit.rotation.x = Math.PI / 2;
+      scene.add(marsOrbit);
+      const satellite = new THREE.Sprite(
+        new THREE.SpriteMaterial({
+          map: textureLoader.load("satellite-sprite.png"),
+        }) // Purple
+      );
+      satellite.scale.set(0.7, 0.7, 1);
+      scene.add(satellite);
+
+      // --- STRAIGHT LINE TRANSFER ---
+      let transferStartPosition = new THREE.Vector3();
+      let transferEndPosition = new THREE.Vector3();
+      let launchTime = 0;
+      const TRANSFER_DURATION = 10; // Duration of the transfer in seconds
+
+      // --- AUTOMATIC LAUNCH ---
+      setTimeout(() => {
+        if (gameState.satelliteMode === "earthOrbit") {
+          launchTime = clock.getElapsedTime(); // Record the exact time of launch
+          transferStartPosition.copy(satellite.position); // Set the starting position
+
+          // Calculate Mars's position at the moment of arrival
+          const arrivalTime = launchTime + TRANSFER_DURATION;
+          const endMarsOrbitAngle =
+            arrivalTime * MARS_ORBIT_SPEED + MARS_START_OFFSET;
+          transferEndPosition.set(
+            Math.cos(endMarsOrbitAngle) * MARS_ORBIT_RADIUS,
+            0,
+            Math.sin(endMarsOrbitAngle) * MARS_ORBIT_RADIUS
+          );
+
+          gameState.isTransferring = true;
+          gameState.satelliteMode = "transfer";
+        }
+      }, 2000); // Launch after 2 seconds
+
+      // --- DATE & DATA SIMULATION ---
+      const startDate = new Date("2013-11-05T00:00:00Z");
+      const kmPerUnit = 149600000 / EARTH_ORBIT_RADIUS;
+      const secondsPerDay = 86400;
+
+      function updateInfoPanel(elapsedTime) {
+        const simulatedSeconds = elapsedTime * secondsPerDay * 5; // Speed up time simulation
+        const currentDate = new Date(
+          startDate.getTime() + simulatedSeconds * 1000
+        );
+        dateDisplay.textContent = currentDate.toISOString().slice(0, 10);
+        const distFromSun = satellite.position.distanceTo(sun.position);
+        const distInKm = distFromSun * kmPerUnit;
+        distanceDisplay.textContent = `${distInKm.toLocaleString("en-US", {
+          maximumFractionDigits: 0,
+        })}km`;
+
+        let velocity = 0;
+        if (
+          gameState.satelliteMode === "transfer" ||
+          gameState.satelliteMode === "approaching"
+        ) {
+          velocity = 29.78 + 4 * Math.sin(gameState.transferProgress * Math.PI);
+          velocityDisplay.textContent = `${velocity.toFixed(3)}km/s`;
+        } else if (gameState.satelliteMode === "earthOrbit") {
+          velocityDisplay.textContent = "29.780km/s";
+        } else {
+          velocityDisplay.textContent = "24.077km/s";
+        }
+      }
+
+      // --- ANIMATION LOOP ---
+      const clock = new THREE.Clock();
+      function animate() {
+        requestAnimationFrame(animate);
+        const elapsedTime = clock.getElapsedTime();
+
+        // Planetary orbits
+        const earthOrbitAngle = elapsedTime * EARTH_ORBIT_SPEED;
+        earth.position.x = Math.cos(earthOrbitAngle) * EARTH_ORBIT_RADIUS;
+        earth.position.z = Math.sin(earthOrbitAngle) * EARTH_ORBIT_RADIUS;
+
+        const marsOrbitAngle =
+          elapsedTime * MARS_ORBIT_SPEED + MARS_START_OFFSET;
+        mars.position.x = Math.cos(marsOrbitAngle) * MARS_ORBIT_RADIUS;
+        mars.position.z = Math.sin(marsOrbitAngle) * MARS_ORBIT_RADIUS;
+
+        // Satellite logic
+        switch (gameState.satelliteMode) {
+          case "earthOrbit":
+            const localOrbitAngle = elapsedTime * 0.5;
+            satellite.position.x =
+              earth.position.x + Math.cos(localOrbitAngle) * 2;
+            satellite.position.z =
+              earth.position.z + Math.sin(localOrbitAngle) * 2;
+            break;
+
+          case "transfer":
+            const timeInTransfer = elapsedTime - launchTime;
+            gameState.transferProgress = Math.min(
+              timeInTransfer / TRANSFER_DURATION,
+              1.0
+            );
+
+            // Linearly interpolate position from start to end
+            satellite.position.lerpVectors(
+              transferStartPosition,
+              transferEndPosition,
+              gameState.transferProgress
+            );
+
+            if (gameState.transferProgress >= 1) {
+              gameState.satelliteMode = "marsOrbit";
+              gameState.marsOrbitEntryTime = clock.getElapsedTime();
+            }
+            break;
+
+          case "marsOrbit":
+            const timeInMarsOrbit = elapsedTime - gameState.marsOrbitEntryTime;
+            const marsLocalOrbitAngle = timeInMarsOrbit * 0.4;
+            // Make the satellite orbit "vertically" so it's always visible from the top-down camera
+            satellite.position.x =
+              mars.position.x + Math.cos(marsLocalOrbitAngle) * 2.5; // Move left/right relative to Mars
+            satellite.position.y =
+              mars.position.y + Math.sin(marsLocalOrbitAngle) * 2.5; // Move "up/down" relative to the orbital plane
+            satellite.position.z = mars.position.z; // Keep Z aligned with Mars
+            break;
+        }
+
+        updateInfoPanel(elapsedTime);
+        controls.update();
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      // --- RESIZE HANDLER ---
+      window.addEventListener("resize", () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      });
+      nextButton.addEventListener("click", () => {
+        // This simple command tells the browser to go to the previous page
+        window.location.href =
+          "index5.html";
+      });
+    </script>
+  </body>
+</html>
