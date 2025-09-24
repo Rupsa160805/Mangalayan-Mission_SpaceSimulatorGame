@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
    * IMPORTANT: Change 'index3.html' if your file has a different name!
    */
   function goToNextPage() {
-    window.location.href = "index5.html";
+    window.location.href = "index6.html";
   }
 
   // Add the click event listener to the button inside the pop-up
@@ -50,3 +50,4 @@ document.addEventListener("DOMContentLoaded", () => {
     nextMissionButton.addEventListener("click", goToNextPage);
   }
 });
+
